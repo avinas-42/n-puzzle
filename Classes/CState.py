@@ -15,7 +15,7 @@ class CState :
     def getVoidPos(self):
         index = self.table.index(VOID) 
         y = index // self.size
-        x = index - y * self.size 
+        x = index % self.size 
         return x, y
 
     def getTile(self, x, y):
