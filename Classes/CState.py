@@ -30,5 +30,6 @@ class CState :
             ret += "\t" + str(self.table[i]) + "\t|"
             if ((i + 1) % self.size == 0 and i + 1 < len(self.table) ) :
                 ret += "\n|"
+        ret += "\n"
         return ret
         

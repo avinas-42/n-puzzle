@@ -10,9 +10,8 @@ def main(argv):
     puzzle = CPuzzle(3)
 
     print(node)
-    node.getChildren()
+    print(node.getChildren())
 
-    for child in node.getChildren()
 
     
    
