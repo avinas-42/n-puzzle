@@ -1,2 +1,7 @@
 puzzle.txt
 .vscode/settings.json
+nPuzzle/__pycache__/parser.cpython-39.pyc
+classes/__pycache__/CNode.cpython-39.pyc
+classes/__pycache__/CPuzzle.cpython-39.pyc
+classes/__pycache__/CState.cpython-39.pyc
+nPuzzle/__pycache__/parser.cpython-39.pyc
