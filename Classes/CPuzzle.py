@@ -11,6 +11,7 @@ class CPuzzle :
         self.listen = True
 
     def play(self) :
+        print(self.startNode.state)
         self.initKeyboard()
     
     def on_release(self, key):
