@@ -24,5 +24,3 @@ def parsing(fileName):
         else:
             return "error", "La valeur d'une tuile du taquin ne correspond pas."
     return size, taquin
-
-print(parsing("puzzle.txt")[1])
