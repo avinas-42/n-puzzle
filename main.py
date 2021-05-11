@@ -5,9 +5,9 @@ from classes.CPuzzle import CPuzzle
 
 def main(argv):
     table = [8,1,4,3,0,5,7,6,2]
-    state = CState(size=3, table=table)
-    node = CNode(state, 0, 0)
-    puzzle = CPuzzle(3)
+    state = CState(size = 3, table = table)
+    node = CNode(state = state, level = 0, fvalue = 0)
+    puzzle = CPuzzle(size = 3)
 
     print(node)
     print(node.getChildren())
