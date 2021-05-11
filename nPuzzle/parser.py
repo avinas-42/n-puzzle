@@ -15,7 +15,8 @@ def parsing(fileName):
                     taquin.append(int(nb.replace('\n', '')))
             else:
                 size = int(tabLine[0].replace('\n', ''))
-
+           
+    print(size)
     if len(taquin) != size * size:
         return "error", "La taille du taquin ne correspond pas avec le nombre de tuile."
     for nb in range(0, size * size):

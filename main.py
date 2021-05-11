@@ -6,10 +6,9 @@ from nPuzzle.parser import parsing
 
 def main(argv):
     size , table = parsing(argv[0])
-    table = [8,1,4,3,0,5,7,6,2]
-    state = CState(size = 3, table = table)
+    state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0)
-    puzzle = CPuzzle(size = 3)
+    puzzle = CPuzzle(size)
 
     print(node)
     print(node.getChildren())
