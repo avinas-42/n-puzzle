@@ -1,7 +1,7 @@
 ﻿import sys
-from classes.CState import CState
-from classes.CNode import CNode
-from classes.CPuzzle import CPuzzle
+from Classes.CState import CState
+from Classes.CNode import CNode
+from Classes.CPuzzle import CPuzzle
 from nPuzzle.parser import parsing 
 from nPuzzle.usageExit import usageExit 
 

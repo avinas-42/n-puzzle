@@ -44,3 +44,14 @@ class CPuzzle :
         listener.start()
         while(self.listen):
             pass
+
+    def hscore(self, case, goal):
+        ret = 0
+        for i in range(self.size * self.size):
+            if case[i] != 0 and case[i] != goal[i]:
+                casei = goal.index(case[i])
+                y = (i // self.size) - (casei // self.size)
+                x = (i % self.size) - (casei % self.size)
+                ret += abs(y) + abs(x)
+        return ret
+

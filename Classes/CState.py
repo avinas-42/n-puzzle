@@ -4,14 +4,12 @@ class CState :
         self.size = size
         self.table = table
         self.voidPos = self.getVoidPos()
-    
-    
 
     def swap(self, x1, y1, x2, y2):
         self.table[x1 + y1 * self.size] = self.table[x1 + y1 * self.size] + self.table[x2 + y2 * self.size]
         self.table[x2 + y2 * self.size] = self.table[x1 + y1 * self.size] - self.table[x2 + y2 * self.size] 
         self.table[x1 + y1 * self.size] = self.table[x1 + y1 * self.size] - self.table[x2 + y2 * self.size]
-    
+
     def getVoidPos(self):
         index = self.table.index(VOID) 
         y = index // self.size
@@ -32,4 +30,3 @@ class CState :
                 ret += "\n|"
         ret += "\n"
         return ret
-        
