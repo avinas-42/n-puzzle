@@ -11,7 +11,6 @@ def main(argv):
         #table vaut une erreur ici
         print(table)
         usageExit()
-            
 
     state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0)
@@ -19,8 +18,10 @@ def main(argv):
     for a, o in optlist : 
         if (a == '-k'):
             puzzle.play()
-    #print(node)
-    #print(node.getChildren())
+    
+
+    puzzle.execution()
+    
 
 if __name__ == "__main__":
 	main(sys.argv[1:])

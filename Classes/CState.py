@@ -23,7 +23,7 @@ class CState :
         self.table[x + y * self.size] = value
 
     def __str__(self):
-        ret = "size = " + str(self.size) +"\n|"
+        ret = "void"+ str(self.voidPos) +"\nsize = " + str(self.size) +"\n|"
         for i in range(len(self.table)):
             ret += "\t" + str(self.table[i]) + "\t|"
             if ((i + 1) % self.size == 0 and i + 1 < len(self.table) ) :

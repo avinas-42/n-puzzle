@@ -1,5 +1,6 @@
 ﻿from pynput import keyboard
-
+def getKey(obj):
+    return obj.fScore
 class CPuzzle :
     def __init__(self,size,startNode):
         self.startNode = startNode
@@ -7,7 +8,7 @@ class CPuzzle :
         self.goal = list(range(1,size*size))
         self.goal.append(0)
         self.open = []
-        self.closed = []
+        self.close = []
         self.listen = True
 
     def play(self) :
@@ -43,13 +44,31 @@ class CPuzzle :
         listener.start()
         while(self.listen):
             pass
-
-    def hscore(self, case, goal):
-        ret = 0
-        for i in range(self.size * self.size):
-            if case[i] != 0 and case[i] != goal[i]:
-                casei = goal.index(case[i])
-                y = (i // self.size) - (casei // self.size)
-                x = (i % self.size) - (casei % self.size)
-                ret += abs(y) + abs(x)
-        return ret
+    
+    def execution(self) :
+        tabChild = self.startNode.getChildren(self.goal)
+        tabChild.sort(key=getKey)
+        self.open += tabChild
+        self.close.append(self.startNode)
+        cpt = 0
+        while 1:
+            cpt += 1 
+            # if cpt % 500 == 0:
+            #     print(self.open[0])
+            if self.open[0].fScore - self.open[0].level == 0 or len(self.open) == 0:
+                break
+            tabChild = self.open[0].getChildren(self.goal)
+            for elem in self.close:    
+                for child in tabChild:
+                    if child.state.table == elem.state.table:
+                            tabChild.remove(child)
+            self.open += tabChild
+            self.close.append(self.open[0])
+            self.open.pop(0)
+            self.open.sort(key=getKey)
+            print(self.open)
+            print("----------------------------------")
+        elem = self.open[0]
+        while elem.daddy != None:
+            print(elem)
+            elem = elem.daddy
