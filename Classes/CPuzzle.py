@@ -30,7 +30,6 @@ class CPuzzle :
         else:
             return True
 
-        
         state = self.startNode.state
         if(state.voidPos[0] + action[0] >= 0 and state.voidPos[0] + action[0] < state.size 
         and state.voidPos[1] + action[1] >= 0 and state.voidPos[1] + action[1] < state.size):
@@ -54,4 +53,3 @@ class CPuzzle :
                 x = (i % self.size) - (casei % self.size)
                 ret += abs(y) + abs(x)
         return ret
-

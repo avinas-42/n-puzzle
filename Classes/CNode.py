@@ -4,6 +4,7 @@ class CNode :
         self.state = state
         self.level = level
         self.fScore = fScore
+        self.daddy = None
 
     def getChildren(self):
         x, y = self.state.voidPos
@@ -15,6 +16,7 @@ class CNode :
                 tmpState = CState(self.state.size, self.state.table.copy())
                 tmpState.swap(x, y, i[0], i[1])
                 tmpNode = CNode(tmpState, self.level + 1, 0)
+                tmpNode.daddy = self
                 children.append(tmpNode)
         return children
     
