@@ -17,7 +17,20 @@ class CNode :
                 tmpNode = CNode(tmpState, self.level + 1, 0)
                 children.append(tmpNode)
         return children
-    
+
+    def hscore(self, case, goal):
+        ret = 0
+        for i in range(self.size * self.size):
+            if case[i] != 0 and case[i] != goal[i]:
+                casei = goal.index(case[i])
+                y = (i // self.size) - (casei // self.size)
+                x = (i % self.size) - (casei % self.size)
+                ret += abs(y) + abs(x)
+        return ret
+
+    def fscore(self, case, goal):
+        return self.hscore(case.state, goal) + case.level
+
     def __repr__(self):
         ret = "level = " + str(self.level) +" | " + " fScore = " + str(self.fScore) + " state =\n" + str(self.state)
         return ret
