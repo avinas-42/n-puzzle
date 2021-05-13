@@ -35,6 +35,8 @@ class CNode :
     def f(self, goal):
         return self.h(self.state.table, goal) + self.level
 
+    def __lt__(self, other):
+        return self.fScore <= other.fScore
     def __repr__(self):
         ret = "level = " + str(self.level) +" | " + " fScore = " + str(self.fScore) + " state =\n" + str(self.state)
         return ret

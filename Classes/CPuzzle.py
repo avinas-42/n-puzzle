@@ -1,5 +1,7 @@
 ﻿from pynput import keyboard
 from .CState import CState
+import bisect
+
 def getKey(obj):
     return obj.fScore
 class CPuzzle :
@@ -89,33 +91,39 @@ class CPuzzle :
             pass
     
     def execution(self) :
-        tabChild = self.startNode.getChildren(self.goal.table)
-        tabChild.sort(key=getKey)
-        self.open += tabChild
-        self.close.append(self.startNode)
+        # print(self.goal)
+        self.startNode.fScore = self.startNode.f(self.goal.table)
+        if self.startNode.fScore == 0 :
+            print(self.startNode)
+            return
+        
+        self.open.append(self.startNode)
         cpt = 0
-        while 1:
-            cpt += 1 
-            # if cpt % 2000 == 0:
-            #     print(self.open[0])
-            if self.open[0].fScore - self.open[0].level == 0 or len(self.open) == 0:
-                break
-            tabChild = self.open[0].getChildren(self.goal.table)
-            for elem in self.close:    
-                for child in tabChild:
-                    if child.state.table == elem.state.table:
-                            tabChild.remove(child)
-            for elem in self.open :
-                for child in tabChild:
-                    if child.state.table == elem.state.table :
-                            tabChild.remove(child)
+        while not(len(self.open) == 0 or self.open[0].fScore - self.open[0].level == 0):
+            if cpt % 1000 == 0 or cpt == 0:
+                print(self.open[0])
+                
+
+            cpt += 1
             
-            self.open += tabChild
-            self.close.append(self.open[0])
-            self.open.pop(0)
-            self.open.sort(key=getKey)
+            tabChild = self.open[0].getChildren(self.goal.table)
+            for child in tabChild:
+                if any(child.state.table == elem.state.table for elem in self.close):
+                    continue
+                if any(child.state.table == elem.state.table and child.fScore > elem.fScore for elem in self.open):
+                    continue
+                else : 
+                    bisect.insort_left(self.open, child)
+                    
+
+            self.close.append(self.open.pop(0))
+            
+            # self.open.sort(key=getKey)
+
+        print("--------------------------")
 
         elem = self.open[0]
         while elem.daddy != None:
             print(elem)
             elem = elem.daddy
+        print(self.startNode)
