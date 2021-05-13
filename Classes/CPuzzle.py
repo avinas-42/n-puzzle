@@ -101,7 +101,7 @@ class CPuzzle :
         cpt = 0
         while not(len(self.open) == 0 or self.open[0].fScore - self.open[0].level == 0):
             if cpt % 1000 == 0 or cpt == 0:
-                print(self.open[0])
+                print(self.open[0].fScore)
                 
 
             cpt += 1
