@@ -37,11 +37,14 @@ def idaSearch(node, threshold, puzzle) :
     fmin = sys.maxsize
 
     for child in node.getChildren(puzzle.goal.table) :
+        # on verifie que le daddy du daddy (node.daddy) nest pas le child
         if  node.daddy != None and child.state.table == node.daddy.state.table :
             continue
+        # recurssif idaSearch sur les enfant du noeud
         temp, found = idaSearch(child, threshold, puzzle)
         if found != None :
             return temp, found
+        # on garde le fScore minimum (fScore = g + h)
         if temp < fmin :
             fmin = temp
     return fmin, None
@@ -52,7 +55,51 @@ def idaStar(puzzle) :
     threshold = puzzle.startNode.fScore
 
     while found == None :
-        temp, found = idaSearch(puzzle.startNode, threshold, puzzle)
+        temp, found = idaSearchChild(puzzle.startNode, threshold, puzzle)
+        # on revien ici quand la tolerence sur le fScore augmente
         threshold = temp
         print(threshold)
     return found
+
+
+
+# tentative rater de ne pas reprendre au debute ça fonctionne mais c'est lent
+# mais c'est surment possible de le coder mieux
+def idaSearchChild(node, threshold, puzzle) :
+    node.fScore = node.f(puzzle.goal.table)
+    if node.fScore > threshold :
+        return node.fScore, None
+    if node.fScore - node.level == 0 :
+        return node.fScore, node
+    fmin = sys.maxsize
+    if len(node.children) > 0 :
+        children = []
+        getAllLastChild(node, children)
+        for child in children :
+            if  node.daddy != None and child.state.table == node.daddy.state.table :
+                continue
+            node.children.append(child)
+            temp, found = idaSearchChild(child, threshold, puzzle)
+            if found != None :
+                return temp, found
+            if temp < fmin :
+                fmin = temp
+    else :
+        
+        for child in node.getChildren(puzzle.goal.table) :
+            if  node.daddy != None and child.state.table == node.daddy.state.table :
+                continue
+            node.children.append(child)
+            temp, found = idaSearchChild(child, threshold, puzzle)
+            if found != None :
+                return temp, found
+            if temp < fmin :
+                fmin = temp
+    return fmin, None
+
+def getAllLastChild(node, children) :
+    for child in node.children :
+        if len(child.children) == 0 :
+            children.append(child)
+        else : 
+            getAllLastChild(child, children)

@@ -5,6 +5,7 @@ class CNode :
         self.level = level
         self.fScore = fScore
         self.daddy = None
+        self.children = []
 
     def getChildren(self, goal):
         x, y = self.state.voidPos
