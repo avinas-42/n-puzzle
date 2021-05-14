@@ -1,5 +1,6 @@
 ﻿import sys
 import bisect
+from collections import deque
 def aStar(puzzle) :
         puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table)
         if puzzle.startNode.fScore == 0 :
@@ -29,30 +30,29 @@ def aStar(puzzle) :
 
 def idaSearch(node, threshold, puzzle) :
     node.fScore = node.f(puzzle.goal.table)
-    print(node)
-    if node.fScore >= threshold :
+    if node.fScore > threshold :
         return node.fScore, None
     if node.fScore - node.level == 0 :
         return node.fScore, node
-    min = sys.maxsize
+    fmin = sys.maxsize
 
     for child in node.getChildren(puzzle.goal.table) :
-        if any(child.state.table == elem.state.table for elem in puzzle.close):
+        if  node.daddy != None and child.state.table == node.daddy.state.table :
             continue
-        puzzle.close.append(child)
         temp, found = idaSearch(child, threshold, puzzle)
         if found != None :
             return temp, found
-        if temp < min :
-            min = temp
-    return min, None
+        if temp < fmin :
+            fmin = temp
+    return fmin, None
 
 def idaStar(puzzle) :
     puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table)
-    threshold = puzzle.startNode.fScore
     found = None
-    puzzle.close.append(puzzle.startNode)
-    
+    threshold = puzzle.startNode.fScore
+
     while found == None :
-        threshold, found = idaSearch(puzzle.startNode, threshold, puzzle)
+        temp, found = idaSearch(puzzle.startNode, threshold, puzzle)
+        threshold = temp
+        print(threshold)
     return found
