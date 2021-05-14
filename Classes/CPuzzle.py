@@ -1,9 +1,10 @@
-﻿from pynput import keyboard
-from .CState import CState
-import bisect
+﻿from .CState import CState
+from .UtilsSearch.search import aStar
+from .UtilsSearch.search import idaStar
 
-def getKey(obj):
-    return obj.fScore
+from pynput import keyboard
+
+
 class CPuzzle :
     def __init__(self,size,startNode):
         self.startNode = startNode
@@ -90,39 +91,9 @@ class CPuzzle :
         while(self.listen):
             pass
     
+
     def execution(self) :
-        # print(self.goal)
-        self.startNode.fScore = self.startNode.f(self.goal.table)
-        if self.startNode.fScore == 0 :
-            print(self.startNode)
-            return
-        
-        self.open.append(self.startNode)
-        cpt = 0
-        while not(len(self.open) == 0 or self.open[0].fScore - self.open[0].level == 0):
-            if cpt % 1000 == 0 or cpt == 0:
-                print(self.open[0].fScore)
-                
-
-            cpt += 1
-            
-            tabChild = self.open[0].getChildren(self.goal.table)
-            for child in tabChild:
-                if any(child.state.table == elem.state.table for elem in self.close):
-                    continue
-                if any(child.state.table == elem.state.table and child.fScore > elem.fScore for elem in self.open):
-                    continue
-                else : 
-                    bisect.insort_left(self.open, child)
-                    
-
-            self.close.append(self.open.pop(0))
-            
-            # self.open.sort(key=getKey)
-
-        print("--------------------------")
-
-        elem = self.open[0]
+        elem = idaStar(self)
         while elem.daddy != None:
             print(elem)
             elem = elem.daddy
