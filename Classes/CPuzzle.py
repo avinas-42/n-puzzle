@@ -90,7 +90,6 @@ class CPuzzle :
         listener.start()
         while(self.listen):
             pass
-    
 
     def execution(self, opt) :
         elem = None

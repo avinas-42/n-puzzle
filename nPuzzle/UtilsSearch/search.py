@@ -13,7 +13,7 @@ def aStar(puzzle) :
             if puzzle.open[0].fScore - puzzle.open[0].level ==  0 :
                 return puzzle.open[0]
             if cpt % 1000 == 0 or cpt == 0:
-                print(puzzle.open[0].fScore)
+                print(len(puzzle.open))
 
             cpt += 1
 
