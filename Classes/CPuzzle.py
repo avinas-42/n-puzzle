@@ -92,8 +92,15 @@ class CPuzzle :
             pass
     
 
-    def execution(self) :
-        elem = idaStar(self)
+    def execution(self, opt) :
+        elem = None
+        for a, o in opt : 
+            if (a == '-a' and o == 'ida'):
+               elem = idaStar(self)
+            if (a == '-a' and o == 'aStar'):
+               elem = aStar(self)
+        if (not elem) : 
+            elem = aStar(self)
         while elem.daddy != None:
             print(elem)
             elem = elem.daddy

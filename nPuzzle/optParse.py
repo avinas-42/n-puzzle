@@ -3,7 +3,7 @@ from .usageExit import usageExit
 
 def optParse(argv):
     try:
-        optlist, argv = getopt.getopt(argv, 'ksf:')
+        optlist, argv = getopt.getopt(argv, 'ksfa:')
     except getopt.GetoptError:
         usageExit()
     if (len(argv) < 1):
