@@ -1,6 +1,6 @@
 ﻿from .CState import CState
-from .UtilsSearch.search import aStar
-from .UtilsSearch.search import idaStar
+import nPuzzle.UtilsSearch.search as search
+
 
 from pynput import keyboard
 
@@ -96,11 +96,11 @@ class CPuzzle :
         elem = None
         for a, o in opt : 
             if (a == '-a' and o == 'ida'):
-               elem = idaStar(self)
+               elem = search.idaStar(self)
             if (a == '-a' and o == 'aStar'):
-               elem = aStar(self)
+               elem = search.aStar(self)
         if (not elem) : 
-            elem = aStar(self)
+            elem = search.aStar(self)
         while elem.daddy != None:
             print(elem)
             elem = elem.daddy

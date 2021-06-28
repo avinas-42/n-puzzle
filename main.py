@@ -4,7 +4,7 @@ from Classes.CNode import CNode
 from Classes.CPuzzle import CPuzzle
 from nPuzzle.parser import parsing 
 from nPuzzle.usageExit import usageExit 
-from Classes.UtilsSearch.heuristics import *
+from nPuzzle.UtilsSearch.heuristics import *
 
 def main(argv):
     size , table, optlist = parsing(argv)
