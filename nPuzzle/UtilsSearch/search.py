@@ -59,7 +59,7 @@ def idaStar(puzzle) :
     threshold = puzzle.startNode.fScore
 
     while found == None :
-        temp, found = idaSearchChild(puzzle.startNode, threshold, puzzle)
+        temp, found = idaSearch(puzzle.startNode, threshold, puzzle)
         # on revien ici quand la tolerence sur le fScore augmente
         threshold = temp
         print(threshold)
