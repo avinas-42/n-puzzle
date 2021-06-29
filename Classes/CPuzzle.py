@@ -92,7 +92,6 @@ class CPuzzle :
         listener.start()
         while(self.listen):
             pass
-    
 
     def execution(self, opt) :
         elem = None
@@ -103,7 +102,8 @@ class CPuzzle :
                elem = search.aStar(self)
         if (not elem) : 
             elem = search.aStar(self)
-        while elem.daddy != None:
-            print(elem)
-            elem = elem.daddy
+        if (elem) :
+            while elem.daddy != None:
+                print(elem)
+                elem = elem.daddy
         print(self.startNode)

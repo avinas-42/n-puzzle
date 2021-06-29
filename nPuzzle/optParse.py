@@ -1,5 +1,5 @@
-﻿import getopt, sys
-from .usageExit import usageExit 
+﻿import getopt
+from .exit import usageExit 
 
 def optParse(argv):
     try:
