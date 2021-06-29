@@ -40,6 +40,7 @@ def idaSearch(node, threshold, puzzle) :
         return node.fScore, node
     fmin = sys.maxsize
 
+    puzzle.maxOpen += 1
     for child in node.getChildren(puzzle.goal.table) :
         # on verifie que le daddy du daddy (node.daddy) nest pas le child
         if  node.daddy != None and child.state.table == node.daddy.state.table :
