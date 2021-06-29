@@ -18,6 +18,7 @@ def aStar(puzzle) :
             cpt += 1
 
             tabChild = puzzle.open[0].getChildren(puzzle.goal.table)
+            puzzle.nbOpenSelected += 1
             for child in tabChild:
                 if any(child.state.table == elem.state.table for elem in puzzle.close):
                     continue
@@ -25,6 +26,8 @@ def aStar(puzzle) :
                     continue
                 else : 
                     bisect.insort_left(puzzle.open, child)
+                    if puzzle.maxOpen < len(puzzle.open):
+                        puzzle.maxOpen = len(puzzle.open)
             puzzle.close.append(puzzle.open.pop(0))
         return None
 
@@ -61,8 +64,6 @@ def idaStar(puzzle) :
         print(threshold)
     return found
 
-
-
 # tentative rater de ne pas reprendre au debute ça fonctionne mais c'est lent
 # mais c'est surment possible de le coder mieux
 def idaSearchChild(node, threshold, puzzle) :
@@ -75,10 +76,12 @@ def idaSearchChild(node, threshold, puzzle) :
     if len(node.children) > 0 :
         children = []
         getAllLastChild(node, children)
+        puzzle.maxOpen += 1
         for child in children :
             if  node.daddy != None and child.state.table == node.daddy.state.table :
                 continue
             node.children.append(child)
+            puzzle.nbOpenSelected += 1
             temp, found = idaSearchChild(child, threshold, puzzle)
             if found != None :
                 return temp, found

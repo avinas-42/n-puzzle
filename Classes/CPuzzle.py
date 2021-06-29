@@ -13,6 +13,8 @@ class CPuzzle :
         self.open = []
         self.close = []
         self.listen = True
+        self.maxOpen = 0
+        self.nbOpenSelected = 0
 
     def nextdirection(self, direction) :
         if direction + 1 > 3 :
