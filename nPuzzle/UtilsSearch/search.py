@@ -12,14 +12,16 @@ def aStar(puzzle) :
         while not(len(puzzle.open) == 0):
             if puzzle.open[0].fScore - puzzle.open[0].level ==  0 :
                 return puzzle.open[0]
+            
+            # just debug
             if cpt % 1000 == 0 or cpt == 0:
                 print(len(puzzle.open))
                 print(puzzle.open[0])
 
             cpt += 1
-
+            puzzle.nbOpenSelected += 1 
             tabChild = puzzle.open[0].getChildren(puzzle.goal.table)
-            puzzle.nbOpenSelected += 1
+            
             for child in tabChild:
                 if any(child.state.table == elem.state.table for elem in puzzle.close):
                     continue
@@ -30,17 +32,17 @@ def aStar(puzzle) :
                     if puzzle.maxOpen < len(puzzle.open):
                         puzzle.maxOpen = len(puzzle.open)
             puzzle.close.append(puzzle.open.pop(0))
+        
         return None
 
 def idaSearch(node, threshold, puzzle) :
-    node.fScore = node.f(puzzle.goal.table)
     if node.fScore > threshold :
         return node.fScore, None
     if node.fScore - node.level == 0 :
         return node.fScore, node
     fmin = sys.maxsize
 
-    puzzle.maxOpen += 1
+    puzzle.nbOpenSelected += 1
     for child in node.getChildren(puzzle.goal.table) :
         # on verifie que le daddy du daddy (node.daddy) nest pas le child
         if  node.daddy != None and child.state.table == node.daddy.state.table :
@@ -58,12 +60,9 @@ def idaStar(puzzle) :
     puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table)
     found = None
     threshold = puzzle.startNode.fScore
-
     while found == None :
-        temp, found = idaSearch(puzzle.startNode, threshold, puzzle)
+        threshold, found = idaSearch(puzzle.startNode, threshold, puzzle)
         # on revien ici quand la tolerence sur le fScore augmente
-        threshold = temp
-        print(threshold)
     return found
 
 # tentative rater de ne pas reprendre au debute ça fonctionne mais c'est lent
