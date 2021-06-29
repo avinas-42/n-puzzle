@@ -13,15 +13,18 @@ def main(argv):
         #table vaut une erreur ici
         print(table)
         usageExit()
+    hTab = [hManhattan]
     for a, o in optlist :
-        if (a == '-a' and o == 'ma'):
-            hFunc = hManhattan
-        if (a == '-a' and o == 'lima'):
-            hFunc = hLinehaTtan
-        else :
-            hFunc = hLinehaTtan
+        if (a == '-h' and "li" in o):
+            hTab.append(hLinearConflict)
+        if (a == '-h' and "co" in o):
+            if size == 3 :
+                hTab.append(hCornerConflictEight)
+            else : 
+                hTab.append(hCornerConflict)
+    
     state = CState(size, table = table)
-    node = CNode(state = state, level = 0, fScore = 0, hFunc = hFunc )
+    node = CNode(state = state, level = 0, fScore = 0, hTab = hTab )
     puzzle = CPuzzle(size, node)
 
     if not isSolvable(state, puzzle.goal) :

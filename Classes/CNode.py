@@ -1,12 +1,13 @@
-﻿from .CState import CState
+﻿from nPuzzle.UtilsSearch.heuristics import hchosen
+from .CState import CState
 class CNode :
-    def __init__(self, state, level, fScore, hFunc):
+    def __init__(self, state, level, fScore, hTab):
         self.state = state
         self.level = level
         self.fScore = fScore
         self.daddy = None
         self.children = []
-        CNode.hFunc = hFunc 
+        CNode.hTab = hTab 
 
     def getChildren(self, goal):
         x, y = self.state.voidPos
@@ -18,16 +19,14 @@ class CNode :
                 tmpState = CState(self.state.size, self.state.table.copy())
                 tmpState.swap(x, y, i[0], i[1])
                 tmpState.voidPos = tmpState.getVoidPos()
-                tmpNode = CNode(tmpState, self.level + 1, 0, CNode.hFunc)
+                tmpNode = CNode(tmpState, self.level + 1, 0, CNode.hTab)
                 tmpNode.fScore = tmpNode.f(goal)
                 tmpNode.daddy = self
                 children.append(tmpNode)
         return children
 
-
-
     def f(self, goal):
-        return CNode.hFunc(self,self.state.table, goal) + self.level
+        return hchosen(self, self.state.table, goal, CNode.hTab) + self.level
 
     def __lt__(self, other):
         return self.fScore <= other.fScore
