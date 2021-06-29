@@ -6,3 +6,5 @@ def usageExit():
 def notSolvableExit():
     print ('this puzzle is not solvable')
     sys.exit(2)
+def safeExit():
+    sys.exit(2)

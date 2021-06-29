@@ -26,9 +26,10 @@ def main(argv):
     state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0, hTab = hTab )
     puzzle = CPuzzle(size, node)
-
-    if not isSolvable(state, puzzle.goal) :
-        notSolvableExit()
+    # print(puzzle.goal)
+    if size == 3 :
+        if not isSolvable(state, puzzle.goal) :
+            notSolvableExit()
         
     # print(hLinehaTtan(node, state.table, puzzle.goal.table))
     # print(hManhattan(node, state.table, puzzle.goal.table))
@@ -36,6 +37,7 @@ def main(argv):
     for a, o in optlist :
         if (a == '-k'):
             puzzle.play()
+            safeExit()
     puzzle.execution(optlist)
     print('number of step : ' + str(puzzle.nbstep))
     print('complexity in time : ' + str(puzzle.nbOpenSelected))

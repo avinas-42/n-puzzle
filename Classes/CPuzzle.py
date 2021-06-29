@@ -1,6 +1,6 @@
 ﻿from .CState import CState
+from nPuzzle.exit import * 
 import nPuzzle.UtilsSearch.search as search
-
 
 from pynput import keyboard
 
@@ -86,6 +86,12 @@ class CPuzzle :
             state.swap(state.voidPos[0], state.voidPos[1], state.voidPos[0] + action[0], state.voidPos[1] + action[1])
             state.voidPos = state.getVoidPos()
         print(state)
+        self.nbstep += 1
+        if state.table == self.goal.table :
+            print('you win in ' + str(self.nbstep) + ' step')
+            self.listen = False 
+            
+
 
     def initKeyboard(self) :
         listener = keyboard.Listener(
