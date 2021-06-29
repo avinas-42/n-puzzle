@@ -1,4 +1,4 @@
-﻿import getopt, sys
+﻿import getopt
 from .exit import usageExit 
 
 def optParse(argv):

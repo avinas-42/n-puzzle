@@ -13,13 +13,17 @@ def main(argv):
         #table vaut une erreur ici
         print(table)
         usageExit()
-    hFunc = hManhattan
+    hFunc = hLinehaTtan
     state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0, hFunc = hFunc )
     puzzle = CPuzzle(size, node)
 
     if not isSolvable(state, puzzle.goal) :
         notSolvableExit()
+    
+    print(hLinehaTtan(node, state.table, puzzle.goal.table))
+    print(hManhattan(node, state.table, puzzle.goal.table))
+
 
     for a, o in optlist :
         if (a == '-k'):

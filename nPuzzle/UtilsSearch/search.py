@@ -14,6 +14,7 @@ def aStar(puzzle) :
                 return puzzle.open[0]
             if cpt % 1000 == 0 or cpt == 0:
                 print(len(puzzle.open))
+                print(puzzle.open[0])
 
             cpt += 1
 
