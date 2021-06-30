@@ -1,4 +1,5 @@
 from .optParse import optParse
+
 def parsing(argv):
     size = None
     taquin = []
@@ -15,9 +16,15 @@ def parsing(argv):
                     for nb in tabLine:
                         if nb == '':
                             continue
-                        taquin.append(int(nb.replace('\n', '')))
+                        try:
+                            taquin.append(int(nb.replace('\n', '')))
+                        except:
+                            return -1, "Le fichier contient des characteres non prevu.", None
                 else:
-                    size = int(tabLine[0].replace('\n', ''))
+                    try:
+                        size = int(tabLine[0].replace('\n', ''))
+                    except:
+                        pass
     except IOError:
         return -1, "Le fichier ne peut pas etre ouvert.", None
     if size == None:
