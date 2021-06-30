@@ -18,9 +18,13 @@ class CNode :
                 
                 tmpState = CState(self.state.size, self.state.table.copy())
                 tmpState.swap(x, y, i[0], i[1])
+                # on verifie que le daddy du daddy (node.daddy) nest pas le child
+                if  self.daddy != None and tmpState.table == self.daddy.state.table :
+                    del tmpState
+                    continue
                 tmpState.voidPos = tmpState.getVoidPos()
                 tmpNode = CNode(tmpState, self.level + 1, 0, CNode.hTab)
-                tmpNode.fScore = tmpNode.f(goal)
+                # tmpNode.fScore = tmpNode.f(goal)
                 tmpNode.daddy = self
                 children.append(tmpNode)
         return children

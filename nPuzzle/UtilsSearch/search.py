@@ -25,6 +25,7 @@ def aStar(puzzle) :
             for child in tabChild:
                 if any(child.state.table == elem.state.table for elem in puzzle.close):
                     continue
+                child.fScore = child.f(puzzle.goal.table)
                 if any(child.state.table == elem.state.table and child.fScore > elem.fScore for elem in puzzle.open):
                     continue
                 else : 
@@ -36,6 +37,7 @@ def aStar(puzzle) :
         return None
 
 def idaSearch(node, threshold, puzzle) :
+    node.fScore = node.f(puzzle.goal.table)
     if node.fScore > threshold :
         return node.fScore, None
     if node.fScore - node.level == 0 :
@@ -44,9 +46,7 @@ def idaSearch(node, threshold, puzzle) :
 
     puzzle.nbOpenSelected += 1
     for child in node.getChildren(puzzle.goal.table) :
-        # on verifie que le daddy du daddy (node.daddy) nest pas le child
-        if  node.daddy != None and child.state.table == node.daddy.state.table :
-            continue
+        puzzle.maxOpen += 1
         # recurssif idaSearch sur les enfant du noeud
         temp, found = idaSearch(child, threshold, puzzle)
         if found != None :
@@ -65,7 +65,7 @@ def idaStar(puzzle) :
         # on revien ici quand la tolerence sur le fScore augmente
     return found
 
-# tentative rater de ne pas reprendre au debute ça fonctionne mais c'est lent
+# tentative rater de ne pas reprendre au debut ça fonctionne mais c'est lent
 # mais c'est surment possible de le coder mieux
 def idaSearchChild(node, threshold, puzzle) :
     node.fScore = node.f(puzzle.goal.table)
