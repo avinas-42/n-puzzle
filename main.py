@@ -22,8 +22,10 @@ def main(argv):
         if (a == '-h' and "co" in o):
             if size == 3 :
                 hTab.append(hCornerConflictEight)
+                hSpeedTab.append(hCornerConflictEight)
             else : 
                 hTab.append(hCornerConflict)
+                hSpeedTab.append(hCornerConflict)
     
     state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0, hTab = hTab, hSpeedTab = hSpeedTab )
