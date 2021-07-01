@@ -6,38 +6,43 @@ def aStar(puzzle) :
         if puzzle.startNode.fScore == 0 :
             print(puzzle.startNode)
             return
-        
-        puzzle.open.append(puzzle.startNode)
-        cpt = 0
-        while not(len(puzzle.open) == 0):
-            if puzzle.open[0].fScore - puzzle.open[0].level ==  0 :
-                return puzzle.open[0]
+        open = []
+        close = []
+        goal = puzzle.goal.table
+        open.append(puzzle.startNode)
+        # cpt = 0
+        while not(len(open) == 0):
+            if open[0].fScore - open[0].level ==  0 :
+                return open[0]
             
             # just debug
-            if cpt % 1000 == 0 or cpt == 0:
-                print(len(puzzle.open))
-                print(puzzle.open[0])
+            # if cpt % 1000 == 0 or cpt == 0:
+            #     print(len(open))
+            #     print(open[0])
 
-            cpt += 1
+            # cpt += 1
             puzzle.nbOpenSelected += 1 
-            tabChild = puzzle.open[0].getChildren(puzzle.goal.table)
+            tabChild = open[0].getChildren(goal)
             
             for child in tabChild:
-                if any(child.state.table == elem.state.table for elem in puzzle.close):
+                if any(child.state.table == elem.state.table for elem in close):
                     continue
-                child.fScore = child.f(puzzle.goal.table)
-                if any(child.state.table == elem.state.table and child.fScore > elem.fScore for elem in puzzle.open):
+                child.fScore = child.fSpeed(goal)
+                if any(child.state.table == elem.state.table and child.fScore > elem.fScore for elem in open):
                     continue
                 else : 
-                    bisect.insort_left(puzzle.open, child)
-                    if puzzle.maxOpen < len(puzzle.open):
-                        puzzle.maxOpen = len(puzzle.open)
-            puzzle.close.append(puzzle.open.pop(0))
+                    bisect.insort_left(open, child)
+                    if puzzle.maxOpen < len(open):
+                        puzzle.maxOpen = len(open)
+            close.append(open.pop(0))
         
         return None
 
 def idaSearch(node, threshold, puzzle) :
-    node.fScore = node.f(puzzle.goal.table)
+    if node.daddy != None : 
+        node.fScore = node.fSpeed(puzzle.goal.table)
+    else :
+        node.fScore = node.f(puzzle.goal.table)
     if node.fScore > threshold :
         return node.fScore, None
     if node.fScore - node.level == 0 :

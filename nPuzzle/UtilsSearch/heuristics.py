@@ -4,20 +4,6 @@
         ret += hFunc(node, table, goal)
     return ret
 
-# def hLinehaTtan(node, table, goal) :
-#     ret = hManhattan(node, table, goal )
-#     ret += hLinearConflict(node, table, goal )
-#     return ret
-
-# def hCornLinehattan(node, table, goal) :
-#     ret = hManhattan(node, table, goal )
-#     ret += hLinearConflict(node, table, goal )
-#     if node.state.size  == 3 :
-#         ret += hCornerConflictEight(node, table, goal )
-#     else :
-#         ret += hCornerConflict(node, table, goal )
-#     return ret
-
 def hManhattan(node, table, goal):
     ret = 0
     size = node.state.size
@@ -27,6 +13,23 @@ def hManhattan(node, table, goal):
             y = (i // size) - (casei // size)
             x = (i % size) - (casei % size)
             ret += abs(y) + abs(x)
+    node.hManhattan = ret
+    return ret
+
+def hManhattanOneTile(node, table, goal):
+    
+    ret = node.daddy.hManhattan
+    size = node.state.size
+    
+    x, y = node.daddy.state.getVoidPos()
+    tile = table[y * size + x]
+    x2, y2 = getCoord1DTo2D(goal.index(tile) , size)
+    ret += abs(x - x2) + abs(y - y2)
+    
+    x, y = node.state.getVoidPos()
+    ret -= abs(x - x2) + abs(y - y2)
+    
+    node.hManhattan = ret
     return ret
 
 def getCoord1DTo2D(index , size) :
@@ -58,6 +61,44 @@ def hLinearConflict(node, table, goal) :
                 if xi == xj and xi == xiGoal:
                     if  not ((yiGoal - yjGoal < 0 and yi - yj < 0 ) or (yiGoal - yjGoal > 0 and yi - yj > 0)) :
                         ret += 2
+    node.hLinear = ret
+    
+    return ret
+def hLinearConflictThatTile(node, table, goal, iTuile) :
+    ret = 0
+    size = node.state.size
+    length = node.state.size * node.state.size
+    
+    for jTuile in range(1, length) :
+        if iTuile != jTuile :
+            xiGoal, yiGoal = getCoord1DTo2D(goal.index(iTuile), size)
+            xjGoal, yjGoal = getCoord1DTo2D(goal.index(jTuile), size)
+            # on test si les deux tuile sont sur la même ligne 
+            if yiGoal == yjGoal:
+                xi, yi = getCoord1DTo2D(table.index(iTuile), size)
+                xj, yj = getCoord1DTo2D(table.index(jTuile), size)
+                if yi == yj and yi == yiGoal :
+                    if  not ((xiGoal - xjGoal < 0 and xi - xj < 0 ) or (xiGoal - xjGoal > 0 and xi - xj > 0)) :
+                        ret += 2
+            elif xiGoal == xjGoal :
+                xi, yi = getCoord1DTo2D(table.index(iTuile), size)
+                xj, yj = getCoord1DTo2D(table.index(jTuile), size)
+                if xi == xj and xi == xiGoal:
+                    if  not ((yiGoal - yjGoal < 0 and yi - yj < 0 ) or (yiGoal - yjGoal > 0 and yi - yj > 0)) :
+                        ret += 2
+    return ret
+
+def hLinearConflictOneTile(node, table, goal) :
+    ret = node.daddy.hLinear
+    size = node.state.size
+    x, y = node.daddy.state.getVoidPos()
+    iTuile = table[y * size + x]
+    
+    ret -= hLinearConflictThatTile(node.daddy, node.daddy.state.table, goal, iTuile)
+
+    ret += hLinearConflictThatTile(node, table, goal, iTuile)
+    
+    node.hLinear = ret
     return ret
 
 def hCornerConflictEight(node, table, goal) :
