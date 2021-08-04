@@ -1,6 +1,27 @@
 ﻿from Classes.CPuzzle import CPuzzle
 import sys
 import bisect
+from collections import deque
+
+def greedy(puzzle) :
+        puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table)
+        if puzzle.startNode.fScore == 0 :
+            print(puzzle.startNode)
+            return
+        goal = puzzle.goal.table
+        actualNode = puzzle.startNode
+
+        while actualNode.fScore - actualNode.level ==  0 :
+            puzzle.nbOpenSelected += 1 
+            tabChild = actualNode.getChildren(goal)
+            
+            actualfScore = tabChild[0].fScore
+            for child in tabChild:
+                child.fScore = child.fSpeed(goal)
+                if child.fScore < actualfScore:
+                    actualNode = child
+        
+        return actualNode
 
 def aStar(puzzle) :
         puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table, CPuzzle.hTab)
