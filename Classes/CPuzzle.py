@@ -1,7 +1,6 @@
 ﻿from .CState import CState
 from nPuzzle.exit import * 
 
-
 from pynput import keyboard
 
 
@@ -10,8 +9,6 @@ class CPuzzle :
         self.startNode = startNode
         self.size = size
         self.goal = self.getGoal(size)
-        self.open = []
-        self.close = []
         self.listen = True
         self.maxOpen = 0
         self.nbOpenSelected = 0
@@ -102,15 +99,4 @@ class CPuzzle :
         while(self.listen):
             pass
 
-    def execution(self, search) :
-        elem = None
-        elem = search(self)
-        if (elem == None) : 
-            print('no result')
-            safeExit()
-        if (elem) :
-            while elem.daddy != None:
-                print(elem)
-                self.nbstep += 1
-                elem = elem.daddy
-        print(self.startNode)
+    

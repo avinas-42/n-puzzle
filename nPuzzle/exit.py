@@ -1,12 +1,11 @@
 ﻿import sys
 def usageExit():
-    usage = '''Usage: python3 main.py [OPTION] [FILE]
-List information about the FILEs (the current directory by default).
+    usage = '''Usage: python3 main.py [OPTION] FILE
 Option :
-    -k play with arrow key
-    -a chosse
-
-            '''
+    -k play with arrow key.
+    -a choose an algorithm: astar, greedy, uniform, ida.
+    -h choose an heuristic: linear, corner. You can chosse both with -h coli
+'''
     print (usage)
     sys.exit(2)
 

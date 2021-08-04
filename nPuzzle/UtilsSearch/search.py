@@ -1,64 +1,53 @@
-﻿from Classes.CPuzzle import CPuzzle
+﻿from nPuzzle.UtilsSearch.searchEnum import Search
+from nPuzzle.UtilsSearch.heuristics import hManhattan
+
+from Classes.CPuzzle import CPuzzle
 import sys
 import bisect
-from collections import deque
 
-def greedy(puzzle) :
-        puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table)
-        if puzzle.startNode.fScore == 0 :
-            print(puzzle.startNode)
-            return
-        goal = puzzle.goal.table
-        actualNode = puzzle.startNode
-
-        while actualNode.fScore - actualNode.level ==  0 :
-            puzzle.nbOpenSelected += 1 
-            tabChild = actualNode.getChildren(goal)
-            
-            actualfScore = tabChild[0].fScore
-            for child in tabChild:
-                child.fScore = child.fSpeed(goal)
-                if child.fScore < actualfScore:
-                    actualNode = child
-        
-        return actualNode
-
-def aStar(puzzle) :
+def searching(puzzle, search) :
+    if (search == Search.IDA):
+        return idaStar(puzzle)
+    if (search != Search.UNIFORM):    
         puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table, CPuzzle.hTab)
-        if puzzle.startNode.fScore == 0 :
-            print(puzzle.startNode)
-            return
-        open = []
-        close = []
-        goal = puzzle.goal.table
-        # open.append( CSpeedNode(puzzle.startNode, puzzle.startNode.state.table, puzzle.startNode.fScore, puzzle.startNode.level))
-        open.append(puzzle.startNode)
-        cpt = 0
-        while not(len(open) == 0):
+    open = []
+    seen = []
+    goal = puzzle.goal.table
+    open.append(puzzle.startNode)
+    seen.append(puzzle.startNode.state.table)
+    
+    while not(len(open) == 0):
+        if (search == Search.ASTAR):
             if open[0].fScore - open[0].level ==  0 :
                 return open[0]
-                
-            puzzle.nbOpenSelected += 1 
-            tabChild = open[0].getChildren(goal)
-            
-            for child in tabChild:
-                if child.state.table in close :
-                    continue
-                child.fScore = child.fSpeed(goal, CPuzzle.hSpeedTab)
-                
-                # child = CSpeedNode(child, child.state.table, child.fScore, child.level)
-                # if child in open :
-                test_open = [child.state.table == elem.state.table and child.fScore > elem.fScore for elem in open]
-                if any(test_open):
-                    continue
-                else : 
-                    bisect.insort_left(open, child)
-                    if puzzle.maxOpen < len(open):
-                        puzzle.maxOpen = len(open)
-            close.append(open.pop(0).state.table)
-        
-        return None
+        elif (search == Search.GREEDY):
+            if open[0].fScore ==  0 :
+                return open[0]
+        elif (search == Search.UNIFORM):
 
+            if open[0].h(goal, [hManhattan]) == 0:
+                return open[0]
+
+        puzzle.nbOpenSelected += 1 
+        tabChild = open[0].getChildren(goal)
+        open.pop(0).state.table
+        for child in tabChild:
+            if child.state.table in seen :
+                continue
+            if (search == Search.ASTAR):
+                child.fScore = child.fSpeed(goal, CPuzzle.hSpeedTab)
+            elif (search == Search.GREEDY):
+                child.fScore = child.hSpeed(goal, CPuzzle.hSpeedTab)
+            elif (search == Search.UNIFORM):
+                child.fScore = child.level
+            
+            bisect.insort_left(open, child)
+            seen.append(child.state.table)
+            if puzzle.maxOpen < len(open):
+                puzzle.maxOpen = len(open)
+
+    return None
+    
 def idaSearch(node, threshold, puzzle) :
     if node.daddy != None : 
         node.fScore = node.fSpeed(puzzle.goal.table, CPuzzle.hSpeedTab)
@@ -83,7 +72,7 @@ def idaSearch(node, threshold, puzzle) :
     return fmin, None
 
 def idaStar(puzzle) :
-    puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table)
+    puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table, CPuzzle.hTab)
     found = None
     threshold = puzzle.startNode.fScore
     while found == None :

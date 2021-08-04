@@ -35,8 +35,12 @@ class CNode :
         return hchosen(self, self.state.table, goal, hTab) + self.level
     def fSpeed(self, goal, hSpeedTab) :
         return hchosen(self, self.state.table, goal, hSpeedTab) + self.level
+    def h(self, goal, hTab):
+        return hchosen(self, self.state.table, goal, hTab)
+    def hSpeed(self, goal, hSpeedTab) :
+        return hchosen(self, self.state.table, goal, hSpeedTab)
     def __lt__(self, other) :
-        return self.fScore <= other.fScore
+        return self.fScore < other.fScore
     def __repr__(self):
         ret = "level = " + str(self.level) +" | " + " fScore = " + str(self.fScore) + " state =\n" + str(self.state)
         return ret

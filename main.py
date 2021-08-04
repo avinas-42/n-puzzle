@@ -4,9 +4,23 @@ from Classes.CNode import CNode
 from Classes.CPuzzle import CPuzzle
 from nPuzzle.parser import parsing 
 from nPuzzle.exit import * 
-from nPuzzle.UtilsSearch.heuristics import *
-from nPuzzle.UtilsSearch.search import *
 from nPuzzle.isSolvable import isSolvable
+from nPuzzle.UtilsSearch.heuristics import *
+from nPuzzle.UtilsSearch.searchEnum import Search
+from nPuzzle.UtilsSearch.search import searching
+
+def execution(puzzle, search) :
+        elem = None
+        elem = searching(puzzle, search)
+        if (elem == None) : 
+            print('no result')
+            safeExit()
+        if (elem) :
+            while elem.daddy != None:
+                print(elem)
+                puzzle.nbstep += 1
+                elem = elem.daddy
+        print(puzzle.startNode)
 
 def main(argv):
     size , table, optlist = parsing(argv)
@@ -33,16 +47,20 @@ def main(argv):
     puzzle = CPuzzle(size, node, hTab = hTab, hSpeedTab = hSpeedTab)
     if not isSolvable(state, puzzle.goal) :
         notSolvableExit()
-        
-    search = aStar
+
+    search = Search.ASTAR
     for a, o in optlist :
         if (a == '-k'):
             puzzle.play()
             safeExit()
         if (a == '-a' and o == 'ida'):
-            search = idaStar
-        
-    puzzle.execution(search)
+            search = Search.IDA
+        elif (a == '-a' and o == 'greedy') :
+            search = Search.GREEDY
+        if (a == '-a' and o == 'uniform'):
+            search = Search.UNIFORM
+    execution(puzzle, search)
+    print(search.name)
     print('number of step : ' + str(puzzle.nbstep))
     print('complexity in time : ' + str(puzzle.nbOpenSelected))
     print('complexity in size : ' + str(puzzle.maxOpen))

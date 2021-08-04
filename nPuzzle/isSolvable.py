@@ -15,7 +15,8 @@ def isSolvable(start, goal) :
 
     evenInverssion = startInversion % 2 == goalInversion % 2
     evenRow = start.voidPos[1] % 2 == goal.voidPos[1] % 2
-    return evenInverssion == evenRow
-    
+    if(start.size > 3):
+        return evenInverssion == evenRow
+    return evenInverssion
 
         
