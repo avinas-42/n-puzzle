@@ -21,12 +21,12 @@ def hManhattanOneTile(node, table, goal):
     ret = node.daddy.hManhattan
     size = node.state.size
     
-    x, y = node.daddy.state.getVoidPos()
+    x, y = node.daddy.state.voidPos
     tile = table[y * size + x]
     x2, y2 = getCoord1DTo2D(goal.index(tile) , size)
     ret += abs(x - x2) + abs(y - y2)
     
-    x, y = node.state.getVoidPos()
+    x, y = node.state.voidPos
     ret -= abs(x - x2) + abs(y - y2)
     
     node.hManhattan = ret
@@ -91,7 +91,7 @@ def hLinearConflictThatTile(node, table, goal, iTuile) :
 def hLinearConflictOneTile(node, table, goal) :
     ret = node.daddy.hLinear
     size = node.state.size
-    x, y = node.daddy.state.getVoidPos()
+    x, y = node.daddy.state.voidPos
     iTuile = table[y * size + x]
     
     ret -= hLinearConflictThatTile(node.daddy, node.daddy.state.table, goal, iTuile)

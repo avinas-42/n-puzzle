@@ -12,8 +12,10 @@ def isSolvable(start, goal) :
     startInversion = inversion(start.table, start.size * start.size)
     # print('---------------------')
     goalInversion = inversion(goal.table, goal.size * goal.size)
-    # print(startInversion)
-    # print(goalInversion)
-    if startInversion % 2 == goalInversion % 2 :
-        return True
-    return False
+
+    evenInverssion = startInversion % 2 == goalInversion % 2
+    evenRow = start.voidPos[1] % 2 == goal.voidPos[1] % 2
+    return evenInverssion == evenRow
+    
+
+        

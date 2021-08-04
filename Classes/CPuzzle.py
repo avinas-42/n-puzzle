@@ -1,12 +1,12 @@
 ﻿from .CState import CState
 from nPuzzle.exit import * 
-import nPuzzle.UtilsSearch.search as search
+
 
 from pynput import keyboard
 
 
 class CPuzzle :
-    def __init__(self,size,startNode):
+    def __init__(self,size,startNode, hTab, hSpeedTab):
         self.startNode = startNode
         self.size = size
         self.goal = self.getGoal(size)
@@ -16,6 +16,8 @@ class CPuzzle :
         self.maxOpen = 0
         self.nbOpenSelected = 0
         self.nbstep = 0
+        CPuzzle.hTab = hTab
+        CPuzzle.hSpeedTab = hSpeedTab
 
     def nextdirection(self, direction) :
         if direction + 1 > 3 :
@@ -100,15 +102,12 @@ class CPuzzle :
         while(self.listen):
             pass
 
-    def execution(self, opt) :
+    def execution(self, search) :
         elem = None
-        for a, o in opt : 
-            if (a == '-a' and o == 'ida'):
-               elem = search.idaStar(self)
-            if (a == '-a' and o == 'aStar'):
-               elem = search.aStar(self)
-        if (not elem) : 
-            elem = search.aStar(self)
+        elem = search(self)
+        if (elem == None) : 
+            print('no result')
+            safeExit()
         if (elem) :
             while elem.daddy != None:
                 print(elem)
