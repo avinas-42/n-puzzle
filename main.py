@@ -24,12 +24,19 @@ def execution(puzzle, search) :
 
 def main(argv):
     size , table, optlist = parsing(argv)
+    goal = 0
     if (size == -1):
         #table vaut une erreur ici
         print(table)
         usageExit()
     hSpeedTab = [hManhattanOneTile]
-    hTab = [hManhattan]
+    hTab = [hManhattan]    
+    for a, o in optlist :
+        if (a == '-h' and "d" in o):
+            hSpeedTab = [hDumb]
+            hTab = [hDumb]
+        if a == '-g':
+            goal = int(o)
     for a, o in optlist :
         if (a == '-h' and "li" in o):
             hTab.append(hLinearConflict)
@@ -44,7 +51,7 @@ def main(argv):
     
     state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0)
-    puzzle = CPuzzle(size, node, hTab = hTab, hSpeedTab = hSpeedTab)
+    puzzle = CPuzzle(size, node, hTab = hTab, hSpeedTab = hSpeedTab, goal)
     if not isSolvable(state, puzzle.goal) :
         notSolvableExit()
 

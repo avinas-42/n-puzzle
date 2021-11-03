@@ -5,10 +5,13 @@ from pynput import keyboard
 
 
 class CPuzzle :
-    def __init__(self,size,startNode, hTab, hSpeedTab):
+    def __init__(self,size,startNode, hTab, hSpeedTab, goal):
         self.startNode = startNode
         self.size = size
-        self.goal = self.getGoal(size)
+        if goal == 2:
+            self.goal = self.getGoal2(size)
+        else:
+            self.goal = self.getGoal(size)
         self.listen = True
         self.maxOpen = 0
         self.nbOpenSelected = 0
@@ -58,6 +61,15 @@ class CPuzzle :
                 direction = self.nextdirection(direction)
             nextPos = self.forward(direction ,pos)
         return state
+
+    def getGoal2(self, size) :
+        table = [0] * (self.size * self.size)
+        for i in range(self.size * self.size):
+            table[i] = i + 1
+        table[self.size * self.size - 1] = 0
+        state = CState(size, table = table)
+        return state
+
 
     def play(self) :
         print(self.startNode.state)

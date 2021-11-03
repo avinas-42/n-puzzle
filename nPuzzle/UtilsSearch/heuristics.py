@@ -4,6 +4,15 @@
         ret += hFunc(node, table, goal)
     return ret
 
+def hDumb(node, table, goal):
+    ret = 0
+    size = node.state.size
+    for i in range(node.state.size * node.state.size):
+        if table[i] != goal[i]:
+            ret += 1 
+    node.hDumb = ret
+    return ret
+
 def hManhattan(node, table, goal):
     ret = 0
     size = node.state.size
