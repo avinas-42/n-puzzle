@@ -5,7 +5,7 @@ from pynput import keyboard
 
 
 class CPuzzle :
-    def __init__(self,size,startNode, hTab, hSpeedTab, goal):
+    def __init__(self, size, startNode, goal, hTab, hSpeedTab):
         self.startNode = startNode
         self.size = size
         if goal == 2:

@@ -9,18 +9,33 @@ from nPuzzle.UtilsSearch.heuristics import *
 from nPuzzle.UtilsSearch.searchEnum import Search
 from nPuzzle.UtilsSearch.search import searching
 
-def execution(puzzle, search) :
-        elem = None
+def display(elem, puzzle, search) :
+    if (elem == None) : 
+        print('no result')
+        safeExit()
+    if (elem) :
+        while elem.daddy != None:
+            print(elem)
+            puzzle.nbstep += 1
+            elem = elem.daddy
+    print(puzzle.startNode)
+    print(search.name)
+    print('number of step : ' + str(puzzle.nbstep))
+    print('complexity in time : ' + str(puzzle.nbOpenSelected))
+    print('complexity in size : ' + str(puzzle.maxOpen))
+
+def execution(puzzle, search, mSearch, tabSearch, goal) :
+    elem = None
+
+    if mSearch and len(tabSearch) > 0:
+        for oneSearch in tabSearch:
+            elem = searching(puzzle, oneSearch)
+            display(elem, puzzle, oneSearch)
+            puzzle = CPuzzle(puzzle.size, puzzle.startNode, goal, puzzle.hTab, puzzle.hSpeedTab)
+    else :
         elem = searching(puzzle, search)
-        if (elem == None) : 
-            print('no result')
-            safeExit()
-        if (elem) :
-            while elem.daddy != None:
-                print(elem)
-                puzzle.nbstep += 1
-                elem = elem.daddy
-        print(puzzle.startNode)
+        display(elem, puzzle, search)
+        
 
 def main(argv):
     size , table, optlist = parsing(argv)
@@ -51,11 +66,28 @@ def main(argv):
     
     state = CState(size, table = table)
     node = CNode(state = state, level = 0, fScore = 0)
-    puzzle = CPuzzle(size, node, hTab = hTab, hSpeedTab = hSpeedTab, goal)
+    puzzle = CPuzzle(size, node, goal, hTab = hTab, hSpeedTab = hSpeedTab)
     if not isSolvable(state, puzzle.goal) :
         notSolvableExit()
-
+    mSearch = False
     search = Search.ASTAR
+    for a, o in optlist :
+        if a == '-m':
+            mSearch = True
+            break
+
+    tabSearch = []
+    if mSearch:
+        for a, o in optlist :
+            if (a == '-a' and o == 'astar'):
+                tabSearch.append(Search.ASTAR)
+            if (a == '-a' and o == 'ida'):
+                tabSearch.append(Search.IDA)
+            if (a == '-a' and o == 'greedy') :
+                tabSearch.append(Search.GREEDY)
+            if (a == '-a' and o == 'uniform'):
+                tabSearch.append(Search.UNIFORM)
+
     for a, o in optlist :
         if (a == '-k'):
             puzzle.play()
@@ -66,10 +98,7 @@ def main(argv):
             search = Search.GREEDY
         if (a == '-a' and o == 'uniform'):
             search = Search.UNIFORM
-    execution(puzzle, search)
-    print(search.name)
-    print('number of step : ' + str(puzzle.nbstep))
-    print('complexity in time : ' + str(puzzle.nbOpenSelected))
-    print('complexity in size : ' + str(puzzle.maxOpen))
+    execution(puzzle, search, mSearch, tabSearch, goal)
+    
 if __name__ == "__main__":
 	main(sys.argv[1:])
