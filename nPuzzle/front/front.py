@@ -21,7 +21,9 @@ def create_group(size):
 def create_div(elem, puzzle):
   nbstep = puzzle.nbstep + 1
   div = ''
+  
   while elem.daddy != None:
+    print(elem)
     nbstep -= 1
     table = create_table(puzzle.size, elem.state.table)
     group = create_group(puzzle.size)
@@ -54,36 +56,37 @@ def create_div(elem, puzzle):
         </span>
         <span class="sr-only">+Next</span>
       </a>
-      <section class="u-align-center u-clearfix u-section-3" id="sec-31d6">
+      <section class="u-align-center u-clearfix" id="sec-31d6">
         <div class="u-clearfix u-sheet u-sheet-1">
           <div class="u-expanded-width u-list u-list-1">
             <div class="u-repeater u-repeater-1">
               <div class="u-align-center u-container-style u-list-item u-repeater-item">
                 <div class="u-container-layout u-similar-container u-container-layout-1">
-                  <h1 class="u-text u-title u-text-1" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{nbstep}</h1>
-                  <p class="u-text u-text-2">Step</p>
+                  <h1 class="u-text u-title " data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{nbstep}</h1>
+                  <p class="u-text ">Step</p>
                 </div>
               </div>
               <div class="u-align-center u-container-style u-list-item u-repeater-item">
                 <div class="u-container-layout u-similar-container u-container-layout-2">
-                  <h1 class="u-text u-title u-text-3" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{puzzle.nbstep}</h1>
-                  <p class="u-text u-text-4"> Number of step</p>
+                  <h1 class="u-text u-title " data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{puzzle.nbstep}</h1>
+                  <p class="u-text "> Number of step</p>
                 </div>
               </div>
               <div class="u-align-center u-container-style u-list-item u-repeater-item">
                 <div class="u-container-layout u-similar-container u-container-layout-3">
-                  <h1 class="u-text u-title u-text-5" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{puzzle.nbOpenSelected}</h1>
-                  <p class="u-text u-text-6"> Complexity in time</p>
+                  <h1 class="u-text u-title " data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{puzzle.nbOpenSelected}</h1>
+                  <p class="u-text "> Complexity in time</p>
                 </div>
               </div>
               <div class="u-align-center u-container-style u-list-item u-repeater-item">
                 <div class="u-container-layout u-similar-container u-container-layout-4">
-                  <h1 class="u-text u-title u-text-7" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{puzzle.maxOpen}</h1>
-                  <p class="u-text u-text-8"> Complexity in size</p>
+                  <h1 class="u-text u-title " data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">{puzzle.maxOpen}</h1>
+                  <p class="u-text "> Complexity in size</p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
       </section>
     </div>'''
     div += tmp
@@ -98,20 +101,17 @@ def front(elem, puzzle):
   rel_path = "NPUZZLE.html"
   abs_file_path = os.path.join(script_dir, rel_path)
   tmp = ''
-  save = ['', '||||', '']
   with open(abs_file_path) as fp:
     data = fp.read()
     tab = data.split('||')
-    save[0] = tab[0]
-    save[2] = tab[2]
     tmp1 = data.split('||')
     tmp1[1] = div
     tmp = ''.join(tmp1)
-  
+  rel_path = "NPUZZLE_visu.html"
+  abs_file_path = os.path.join(script_dir, rel_path)
   with open(abs_file_path, "w") as fp:
     fp.write(tmp)
 
   webbrowser.open('file://' + abs_file_path,new=2)
 
-  with open(abs_file_path, "w") as fp:
-    fp.write(''.join(save))
+  

@@ -11,12 +11,14 @@ from nPuzzle.UtilsSearch.search import searching
 from nPuzzle.front.front import front
 
 def display(elem, puzzle, search) :
+    
     if (elem == None) : 
         print('no result')
         safeExit()
     if (elem) :
         while elem.daddy != None:
             puzzle.nbstep += 1
+            print(elem)
             elem = elem.daddy
     print(puzzle.startNode)
     print(search.name)
@@ -36,7 +38,6 @@ def execution(puzzle, search, mSearch, tabSearch, goal, visu) :
         if visu:
             front(elem, puzzle)
         
-
 def main(argv):
     size , table, optlist = parsing(argv)
     goal = 0
