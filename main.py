@@ -8,6 +8,7 @@ from nPuzzle.isSolvable import isSolvable
 from nPuzzle.UtilsSearch.heuristics import *
 from nPuzzle.UtilsSearch.searchEnum import Search
 from nPuzzle.UtilsSearch.search import searching
+from nPuzzle.front.front import front
 
 def display(elem, puzzle, search) :
     if (elem == None) : 
@@ -15,7 +16,6 @@ def display(elem, puzzle, search) :
         safeExit()
     if (elem) :
         while elem.daddy != None:
-            print(elem)
             puzzle.nbstep += 1
             elem = elem.daddy
     print(puzzle.startNode)
@@ -24,9 +24,7 @@ def display(elem, puzzle, search) :
     print('complexity in time : ' + str(puzzle.nbOpenSelected))
     print('complexity in size : ' + str(puzzle.maxOpen))
 
-def execution(puzzle, search, mSearch, tabSearch, goal) :
-    elem = None
-
+def execution(puzzle, search, mSearch, tabSearch, goal, visu) :
     if mSearch and len(tabSearch) > 0:
         for oneSearch in tabSearch:
             elem = searching(puzzle, oneSearch)
@@ -35,11 +33,14 @@ def execution(puzzle, search, mSearch, tabSearch, goal) :
     else :
         elem = searching(puzzle, search)
         display(elem, puzzle, search)
+        if visu:
+            front(elem, puzzle)
         
 
 def main(argv):
     size , table, optlist = parsing(argv)
     goal = 0
+    visu = False
     if (size == -1):
         #table vaut une erreur ici
         print(table)
@@ -52,6 +53,8 @@ def main(argv):
             hTab = [hDumb]
         if a == '-g':
             goal = int(o)
+        if a == '-v':
+            visu = True
     for a, o in optlist :
         if (a == '-h' and "li" in o):
             hTab.append(hLinearConflict)
@@ -98,7 +101,7 @@ def main(argv):
             search = Search.GREEDY
         if (a == '-a' and o == 'uniform'):
             search = Search.UNIFORM
-    execution(puzzle, search, mSearch, tabSearch, goal)
+    execution(puzzle, search, mSearch, tabSearch, goal, visu)
     
 if __name__ == "__main__":
 	main(sys.argv[1:])
