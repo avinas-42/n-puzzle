@@ -11,10 +11,10 @@ def searching(puzzle, search) :
     if (search != Search.UNIFORM):    
         puzzle.startNode.fScore = puzzle.startNode.f(puzzle.goal.table, CPuzzle.hTab)
     open = []
-    seen = []
+    closed = []
     goal = puzzle.goal.table
     open.append(puzzle.startNode)
-    seen.append(puzzle.startNode.state.table)
+    closed.append(puzzle.startNode.state.table)
     
     while not(len(open) == 0):
         if (search == Search.ASTAR):
@@ -32,7 +32,7 @@ def searching(puzzle, search) :
         tabChild = open[0].getChildren(goal)
         open.pop(0).state.table
         for child in tabChild:
-            if child.state.table in seen :
+            if child.state.table in closed :
                 continue
             if (search == Search.ASTAR):
                 child.fScore = child.fSpeed(goal, CPuzzle.hSpeedTab)
@@ -42,7 +42,7 @@ def searching(puzzle, search) :
                 child.fScore = child.level
             
             bisect.insort_left(open, child)
-            seen.append(child.state.table)
+            closed.append(child.state.table)
             if puzzle.maxOpen < len(open):
                 puzzle.maxOpen = len(open)
 
