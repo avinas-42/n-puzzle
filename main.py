@@ -35,6 +35,8 @@ def execution(puzzle, search, mSearch, tabSearch, goal) :
     else :
         elem = searching(puzzle, search)
         display(elem, puzzle, search)
+
+
         
 
 def main(argv):
@@ -70,7 +72,7 @@ def main(argv):
     if not isSolvable(state, puzzle.goal) :
         notSolvableExit()
     mSearch = False
-    search = Search.ASTAR
+    search = Search.IDA
     for a, o in optlist :
         if a == '-m':
             mSearch = True
@@ -92,8 +94,8 @@ def main(argv):
         if (a == '-k'):
             puzzle.play()
             safeExit()
-        if (a == '-a' and o == 'ida'):
-            search = Search.IDA
+        if (a == '-a' and o == 'astar'):
+            search = Search.ASTAR
         elif (a == '-a' and o == 'greedy') :
             search = Search.GREEDY
         if (a == '-a' and o == 'uniform'):
